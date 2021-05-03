@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+static int getInt(int* pResultado);
+static int getFloat(float* pResultado);
+static int getString(char* cadena, int longitud);
+static int verificarFlotante(char* cadena);
+static int verificarNumerica(char* cadena, int limite);
 /**
  * \brief 	Pide ingresar un numero con decimales, y verifica que se encuentre en el minimo y maximo ingresado
  * \param pResultado es un puntero al espacio de memoria donde se copiara el valor obtenido
@@ -43,7 +49,7 @@ int aux_getNumeroFlotante(float* pResultado, char* mensaje, char* Error, float m
  * \return Retorna 0 si se obtiene el numero correctamente y -1 si ocurre algun error
  *
  */
-int getFloat(float* pResultado)
+static int getFloat(float* pResultado)
 {
     int retorno = -1;
     char bufferAux[64];
@@ -67,7 +73,7 @@ int getFloat(float* pResultado)
  * \return Retorna 0 si se obtiene una cadena correctamente y -1 si ocurre algun error
  *
  */
-int getString(char* cadena, int longitud)
+static int getString(char* cadena, int longitud)
 {
 	int retorno = -1;
 	char auxString[64];
@@ -97,7 +103,7 @@ int getString(char* cadena, int longitud)
  * \return Retorna 0 si se corrobora que el numero sea flotante y -1 si no lo es
  *
  */
-int verificarFlotante(char* cadena)
+static int verificarFlotante(char* cadena)
 {
 	int retorno = -1;
 	int auxPuntos = 0;
@@ -170,7 +176,7 @@ int aux_getNumeroInt(int* pResultado, char* mensaje, char* Error, int minimo, in
  * \return Retorna 0 si se obtiene un numero correctamente y -1 si ocurre algun error
  *
  */
-int getInt(int* pResultado)
+static int getInt(int* pResultado)
 {
     int retorno = -1;
     char auxString[64];
@@ -192,7 +198,7 @@ int getInt(int* pResultado)
  * \return Retorna 0 si se corrobora que el numero entero y -1 si no lo es
  *
  */
-int verificarNumerica(char* cadena, int limite)
+static int verificarNumerica(char* cadena, int limite)
 {
 	int retorno = -1;
 	if(cadena != NULL && limite > 0)

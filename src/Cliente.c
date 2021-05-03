@@ -50,6 +50,17 @@ int cli_imprimir(Cliente* pElemento)
 		}
 	return retorno;
 }
+
+int cli_ImprimirConCompras(Cliente* pElemento, int compras)
+{
+	int retorno=-1;
+	if(pElemento != NULL && pElemento->isEmpty == 0)
+		{
+			retorno=0;
+			printf("\n %d - %s - %s - %s - %d ",pElemento->id,pElemento->nombre,pElemento->apellido,pElemento->Cuit, compras);
+		}
+	return retorno;
+}
 //----------------------------------------------------------------------------------------------------------------
 int cli_imprimirArray(Cliente* array,int limite)
 {
@@ -61,7 +72,7 @@ int cli_imprimirArray(Cliente* array,int limite)
 		printf("IdCliente - Nombre - Apellido - Cuit");
 			for(i=0;i<limite;i++)
 			{
-				cli_imprimir(&array[i]);
+					cli_imprimir(&array[i]);
 			}
 	}
 	return respuesta;
@@ -155,7 +166,6 @@ int cli_EliminarPorClienteId(Cliente* array,int limite, int indice)
 
 int cli_imprimirPorId(Cliente* array,int limite, int indice)
 {
-	Cliente bufferCliente;
 	int retorno=-1;
 	if(array != NULL && limite > 0 && indice < limite && indice >= 0 && array[indice].isEmpty == 0)
 	{

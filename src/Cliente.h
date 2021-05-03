@@ -24,5 +24,6 @@ int cli_buscarId(Cliente array[], int limite, int valorBuscado);
 int cli_modificarArray(Cliente* array,int limite, int indice);
 int cli_EliminarPorClienteId(Cliente* array,int limite, int indice);
 int cli_imprimirPorId(Cliente* array,int limite, int indice);
+int cli_ImprimirConCompras(Cliente* pElemento, int compras);
 
 #endif /* CLIENTE_H_ */

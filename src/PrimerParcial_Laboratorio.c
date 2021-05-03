@@ -21,7 +21,7 @@ int main(void) {
 		int idCompras;
 		int auxiliarIndiceCompra;
 		int posicion;
-		int precio;
+
 
 
 
@@ -41,24 +41,27 @@ int main(void) {
 		cli_altaForzadaArray(arrayCliente,QTY_CLIENTES,2,&idCliente,"TOMAS","RODRIGUEZ", "20342158261");
 
 		//ALTA FORZADA COMPRA
-		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,0,&idCompras,1,"COMPRA 1","COLON/MORENO","VERDE");
-		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,1,&idCompras,1,"COMPRA 2","MORENO/DORREGO","AZUL");
-		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,2,&idCompras,2,"COMPRA 3","BELGRANO/ZAPIOLA","ROJO");
-		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,3,&idCompras,0,"COMPRA 4","PUCCINI/BRUZA","VIOLETA");
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,0,&idCompras,1,"COMPRA 1","COLON/MORENO","VERDE", 10, 500);
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,1,&idCompras,1,"COMPRA 2","MORENO/DORREGO","AZUL", 20, 980);
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,2,&idCompras,2,"COMPRA 3","BELGRANO/ZAPIOLA","ROJO", 5, 300);
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,3,&idCompras,0,"COMPRA 4","PUCCINI/BRUZA","VIOLETA", 500, 10000);
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,4,&idCompras,0,"COMPRA 5","PUCCINI/BRUZA","VERDE", 600, 10000);
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,5,&idCompras,2,"COMPRA 6","PUCCINI/BRUZA","AZUL", 450, 10000);
+		com_altaForzadaArray(arrayCompra,QTY_COMPRAS,6,&idCompras,0,"COMPRA 7","PUCCINI/BRUZA","AZUL", 15, 10000);
 
 		do{
-								if(!aux_getNumeroInt(	&opcion,
-										"\n\n1.   Dar alta a  Cliente"
-										"\n2.   Modificar datos de Cliente"
-										"\n3.   Eliminar un Cliente"
-										"\n4.   Realizar compra"
-										"\n5.   Pagar Compra"
-										"\n6.   Cancelar Compra"
-										"\n7.   Imprimir Clientes"
-										"\n8.   Informes"
-										"\n9.   Salir\n\n",
-										"\nError opcion invalida",1,9,2) )
-									{
+			if(!aux_getNumeroInt(	&opcion,
+					"\n\n1.   Dar alta a  Cliente"
+					"\n2.   Modificar datos de Cliente"
+					"\n3.   Eliminar un Cliente"
+					"\n4.   Realizar compra"
+					"\n5.   Pagar Compra"
+					"\n6.   Cancelar Compra"
+					"\n7.   Imprimir Clientes"
+					"\n8.   Informes"
+					"\n9.   Salir\n\n",
+					"\nError opcion invalida",1,9,2) )
+				{
 						switch(opcion)
 						{
 						case 1:
@@ -111,7 +114,7 @@ int main(void) {
 									posicion = cli_buscarId(arrayCliente,QTY_CLIENTES,auxiliarId);
 									if(posicion != -1)
 									{
-										com_alta(arrayCompra,QTY_CLIENTES,auxiliarIndiceCompra,auxiliarId,&idCompras,precio);
+										com_alta(arrayCompra,QTY_CLIENTES,auxiliarIndiceCompra,auxiliarId,&idCompras);
 									}
 									else
 									{
@@ -121,41 +124,59 @@ int main(void) {
 								}
 							}
 							break;
-						case 5: //com_imprimirArray(arrayCompra,QTY_COMPRAS);
+						case 5:
 							if(CliCom_PagarCompra(arrayCompra, QTY_COMPRAS, idCompras, arrayCliente, QTY_CLIENTES)!= 0)
 							{
 								printf("\nERROR");
 							}
-	;
-													break;
-						case 6: printf("ingreso opcion 6");
-													break;
-						case 7: cli_imprimirArray(arrayCliente,QTY_CLIENTES);
-													break;
+							break;
+						case 6:
+							if(CliCom_CancelarCompra(arrayCompra, QTY_COMPRAS, idCompras, arrayCliente, QTY_CLIENTES)!= 0)
+							{
+								printf("\nERROR");
+							}
+							break;
+						case 7:
+							if(CliCom_ImprimirClientesConCompras(arrayCompra, QTY_COMPRAS, idCompras, arrayCliente, QTY_CLIENTES)!= 0)
+							{
+								printf("\nERROR");
+							}
+							break;
 						case 8:printf("¿Que informe desea realizar?");
 							do{
-							if(!aux_getNumeroInt(&opcion,
+								if(!aux_getNumeroInt(&opcion,
 									"\n\n1.   Color de barbijo que se compro mas veces"
 									"\n2.   Cantidad de compras pendientes"
 									"\n3.   Compra con precio por unidad mas bajo"
 									"\n4.   Salir\n\n",
-									"\nError opcion invalida",1,4,2) )
+									"\nOpcion Invalidad. Reingrese",1,4,2) )
 									{
 										switch(opcion)
 										{
-										case 1: printf("ingreso opcion 1");
+										case 1:
+											if(com_ColorMasPedido(arrayCompra, QTY_COMPRAS) != 0)
+											{
+												printf("\nERROR");
+											}
 																	break;
-										case 2: printf("ingreso opcion 2");
-																	break;
-										case 3: printf("ingreso opcion 3");
-																	break;
+										case 2:
+											if(com_ContarPendientes(arrayCompra, QTY_COMPRAS) != 0)
+											{
+												printf("\nERROR");
+											}
+											break;
+										case 3:
+											if(com_CompraConPrecioXunidadMasBajo(arrayCompra, QTY_COMPRAS) != 0)
+											{
+												printf("\nERROR");
+											}
+											break;
 										}
 									}
 								}while(opcion != 4);
-																	break;
-						case 9: printf("ingreso opcion 9");
-													break;
-								}
+								break;
+
+									}
 				}
 			    	}while(opcion != 9);
 	return EXIT_SUCCESS;
