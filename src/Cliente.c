@@ -42,9 +42,9 @@ int cli_alta(Cliente* array,int limite, int* id)
 		indice = cli_getEmptyIndex(array,limite);
 		if(limite > 0 && indice < limite && indice >= 0 && id != NULL)
 		{
-			if(	aux_getString(bufferCliente.nombre,NOMBRE_LEN,"\nNombre? \n","\nERROR\n",2) == 0 &&
-				aux_getString(bufferCliente.apellido,APELLIDO_LEN,"\nApellido? \n","\nERROR\n",2) == 0 &&
-				aux_getString(bufferCliente.Cuit,12,"\n Cuit? \n","\nERROR\n",2) == 0)
+			if(	aux_getString(bufferCliente.nombre,NOMBRE_LEN,"\nIngrese el nombre del cliente: \n","\nERROR\n",2) == 0 &&
+				aux_getString(bufferCliente.apellido,APELLIDO_LEN,"\nIngrese el apellido del cliente: \n","\nERROR\n",2) == 0 &&
+				aux_getStringNum(bufferCliente.Cuit,12,"\nIngrese el cuit del cliente:  \n","\nERROR. El cuit solo puede ser numerico y de 11 digitos\n",2) == 0)
 			{
 				respuesta = 0;
 				bufferCliente.id = *id;
@@ -215,14 +215,14 @@ int cli_modificarArray(Cliente* array,int limite, int clienteId)
 	if(array != NULL && limite > 0 )
 	{
 		cli_imprimirArray(array,limite);
-		if(aux_getNumeroInt(&auxclienteId,"\nIndique el ID del Cliente a modificar","\nID invalido. Reingrese",0,clienteId,0) == 0)
+		if(aux_getNumeroInt(&auxclienteId,"\nIndique el ID del Cliente a modificar\n","\nID invalido. Reingrese\n",0,clienteId,0) == 0)
 		{
 			indice = cli_buscarId(array,limite,auxclienteId);
 			if(	indice < limite && indice >= 0 && array[indice].isEmpty == 0)
 			{
-				if(	aux_getString(bufferCliente.nombre,NOMBRE_LEN,"\nNombre?\n","\nERROR\n",2) == 0 &&
-					aux_getString(bufferCliente.apellido,APELLIDO_LEN,"\nApellido?\n","\nERROR\n",2) == 0 &&
-					aux_getString(bufferCliente.Cuit,12,"\n Cuit? \n","\nERROR\n",2) == 0)
+				if(	aux_getString(bufferCliente.nombre,NOMBRE_LEN,"\nIngrese el nombre del cliente: \n","\nERROR\n",2) == 0 &&
+					aux_getString(bufferCliente.apellido,APELLIDO_LEN,"\nIngrese el apellido del cliente\n","\nERROR\n",2) == 0 &&
+					aux_getString(bufferCliente.Cuit,12,"\nIngrese el cuit del cliente: \n","\nERROR. El cuit solo puede ser numerico y de 11 digitos\n",2) == 0)
 				{
 				respuesta = 0;
 				bufferCliente.id = array[indice].id;

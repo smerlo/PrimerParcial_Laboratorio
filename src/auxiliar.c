@@ -8,6 +8,7 @@ static int getFloat(float* pResultado);
 static int getString(char* cadena, int longitud);
 static int verificarFlotante(char* cadena);
 static int verificarNumerica(char* cadena, int limite);
+static int getStringNum(char* cadena, int longitud);
 /**
  * \brief 	Pide ingresar un numero con decimales, y verifica que se encuentre en el minimo y maximo ingresado
  * \param pResultado es un puntero al espacio de memoria donde se copiara el valor obtenido
@@ -219,6 +220,16 @@ static int verificarNumerica(char* cadena, int limite)
 	return retorno;
 }
 
+/**
+ * \brief 	Pide ingresar un string y verifica que sea de la longitud adecuada
+ * \param longitud es un numero que define la longitud maxima de la cadena a obtener
+ * \param pResultado es un puntero al espacio de memoria donde se copiara el valor obtenido
+ * \param mensaje es un puntero al espacio de memoria donde se encuentra el mensaje que se le mostrara al usuario
+ * \param mensajeError es un puntero al espacio de memoria donde se encuentra el mensaje que se le mostrara al usuario en caso de error
+ * \param reintentos es un numero que define la cantidad de reintentos que tiene el usuario en caso de ingresar un valor incorrecto
+ * \return Retorna 0 si se obtiene el numero correctamente y -1 si ocurre algun error
+ *
+ */
 int aux_getString(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos)
 {
 	char bufferString[4096];
@@ -238,4 +249,69 @@ int aux_getString(char* pResultado, int longitud,char* mensaje, char* mensajeErr
 	return retorno;
 }
 
+/**
+ * \brief 	Pide ingresar un string y verifica que sea numerica y de la longitud adecuada
+ * \param longitud es un numero que define la longitud maxima de la cadena a obtener
+ * \param pResultado es un puntero al espacio de memoria donde se copiara el valor obtenido
+ * \param mensaje es un puntero al espacio de memoria donde se encuentra el mensaje que se le mostrara al usuario
+ * \param mensajeError es un puntero al espacio de memoria donde se encuentra el mensaje que se le mostrara al usuario en caso de error
+ * \param reintentos es un numero que define la cantidad de reintentos que tiene el usuario en caso de ingresar un valor incorrecto
+ * \return Retorna 0 si se obtiene el numero correctamente y -1 si ocurre algun error
+ *
+ */
+int aux_getStringNum(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos)
+{
+	char bufferString[4096];
+	int retorno = -1;
+	while(reintentos>=0)
+	{
+		reintentos--;
+		printf("%s",mensaje);
+		if(getStringNum(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud )
+		{
+			strncpy(pResultado,bufferString,longitud);
+			retorno = 0;
+			break;
+		}
+		printf("%s",mensajeError);
+	}
+	return retorno;
+}
+
+/**
+ * \brief 	Lee de stdin hasta que encuentra un '\n' o hasta que haya copiado en cadena siempre y cuando sea numerica y
+ * 			un máximo de 'longitud - 1' caracteres.
+ * \param cadena Puntero al espacio de memoria donde se copiara la cadena obtenida
+ * \param longitud Define el tamaño de cadena
+ * \return Retorna 0 si se obtiene una cadena correctamente y -1 si ocurre algun error
+ *
+ */
+static int getStringNum(char* cadena, int longitud)
+{
+	int retorno = -1;
+	char auxString[64];
+	long aux;
+	if(cadena != NULL && longitud > 0)
+	{
+		fflush(stdin);
+		if(fgets(auxString,sizeof(auxString),stdin) != NULL)
+		{
+			if(auxString[strnlen(auxString,sizeof(auxString))-1] == '\n')
+			{
+				auxString[strnlen(auxString,sizeof(auxString))-1] = '\0';
+			}
+			if(strnlen(auxString,sizeof(auxString)) <= longitud)
+			{
+
+				aux = atol(auxString);
+				if(aux != 0 && strnlen(auxString, longitud) == 11)
+				{
+					strncpy(cadena,auxString,longitud);
+					retorno=0;
+				}
+			}
+		}
+	}
+	return retorno;
+}
 

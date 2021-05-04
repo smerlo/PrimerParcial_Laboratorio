@@ -489,7 +489,7 @@ int com_ColorMasPedido(Compra array[], int limite)
 						}
 					}
 				}
-				printf("El color mas vendido es %s con un total de %d pedidos", ColorMasPedido,CantidadPedidos);
+				printf("\nEl color mas vendido es %s con un total de %d pedidos", ColorMasPedido,CantidadPedidos);
 
 			}
 	return respuesta;
