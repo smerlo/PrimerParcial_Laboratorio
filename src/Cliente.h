@@ -15,11 +15,11 @@ typedef struct{
 
 
 int cli_inicializarArray(Cliente* array,int limite);
-int cli_alta(Cliente* array,int limite, int indice, int* id);
+int cli_alta(Cliente* array,int limite, int* id);
 int cli_imprimir(Cliente* pElemento);
 int cli_imprimirArray(Cliente* array,int limite);
 int cli_getEmptyIndex(Cliente* array,int limite);
-int cli_altaForzadaArray(Cliente* array,int limite, int indice, int* id,char* nombre,char* apellido,char* cuit);
+int cli_harcodeo(Cliente* array,int limite, int* id,char* nombre,char* apellido,char* cuit);
 int cli_buscarId(Cliente array[], int limite, int valorBuscado);
 int cli_modificarArray(Cliente* array,int limite, int indice);
 int cli_EliminarPorClienteId(Cliente* array,int limite, int indice);

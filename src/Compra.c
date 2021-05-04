@@ -4,6 +4,12 @@
 #include <string.h>
 #include "auxiliar.h"
 
+/**
+ * \brief 	Inicializa todos los elementos del array como vacios
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+ *  * \return Retorna 0 si se obtiene el numero correctamente y -1 si ocurre algun error
+ */
 int com_inicializarArray(Compra* array,int limite)
 {
 	int respuesta = -1;
@@ -18,12 +24,26 @@ int com_inicializarArray(Compra* array,int limite)
 		}
 	return respuesta;
 }
-//----------------------------------------------------------------------------------------------------------------
 
-int com_altaForzadaArray(Compra* array,int limite, int indice, int* idCompra, int idCliente,char* descripcion, char* direccion, char* color, int cantidad, int precio)
+/**
+ * \brief 	Guarda una Compra sin pedirle datos al usuario
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ * \param idCompra. Puntero a la variable donde se guarda el id disponible para ponerle a la Compra
+ * \param idCliente. Puntero a la variable donde se guarda el id del cliente que hizo la compra
+ * \param descripcion. Puntero a un array de caracteres que contiene la descripcion
+ * \param direccion. Puntero a un array de caracteres que contiene la direccion
+ * \param color. Puntero a un array de caracteres que contiene el color
+ * \param cantidad. Cantidad de barbijos comprados
+ * \return Retorna 0 si se obtiene el numero correctamente y -1 si ocurre algun error
+ *
+ */
+int com_harcodeo(Compra* array,int limite, int* idCompra, int idCliente,char* descripcion, char* direccion, char* color, int cantidad)
 {
 	int respuesta = -1;
+	int indice = -1;
 	Compra bufferCompra;
+	indice = com_getEmptyIndex(array, limite);
 	if(array != NULL && limite > 0 && indice < limite && indice >= 0 && idCompra != NULL)
 		{
 			strncpy(bufferCompra.direccionDeEntrega,direccion,QTY_DIRECCIONDEENTREGA);
@@ -32,7 +52,6 @@ int com_altaForzadaArray(Compra* array,int limite, int indice, int* idCompra, in
 			bufferCompra.idCliente = idCliente;
 			bufferCompra.idCompra = *idCompra;
 			bufferCompra.cantidad = cantidad;
-			bufferCompra.precio = precio;
 			bufferCompra.isEmpty = 0;
 			bufferCompra.estado=0;
 			respuesta = 0;
@@ -43,7 +62,14 @@ int com_altaForzadaArray(Compra* array,int limite, int indice, int* idCompra, in
 		}
 	return respuesta;
 }
-//----------------------------------------------------------------------------------------------------------------
+
+/**
+ * \brief 	Imprime todos las Compras del array
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ *  * \return Retorna 0 si se obtiene el nummero correctamente y -1 si ocurre algun error
+ *
+ */
 int com_imprimirArray(Compra* array,int limite)
 {
 	int respuesta = -1;
@@ -60,6 +86,13 @@ int com_imprimirArray(Compra* array,int limite)
 		return respuesta;
 }
 
+/**
+ * \brief 	Imprime todos las Compras del array que se encuentren impagas
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ *  * \return Retorna 0 si se obtiene el nummero correctamente y -1 si ocurre algun error
+ *
+ */
 int com_imprimirComprasImpagas(Compra* array,int limite)
 {
 	int respuesta = -1;
@@ -78,19 +111,31 @@ int com_imprimirComprasImpagas(Compra* array,int limite)
 	}
 		return respuesta;
 }
-//----------------------------------------------------------------------------------------------------------------
 
+/**
+ * \brief 	Imprime los datos de una Compra
+ * \param pElemento. Puntero a una compra
+ *  * \return Retorna 0 si se obtiene el numero correctamente y -1 si ocurre algun error
+ *
+ */
 int com_imprimir(Compra* pElemento)
 {
-	int retorno=-1;
+	int respuesta=-1;
 	if(pElemento != NULL && pElemento->isEmpty == 0)
 		{
-		retorno=0;
+		respuesta=0;
 		printf("\nID: %d - %s - %s - %s - %d",pElemento->idCompra,pElemento->descripcion,pElemento->direccionDeEntrega,pElemento->color, pElemento->cantidad);
 		}
-	return retorno;
+	return respuesta;
 }
-//----------------------------------------------------------------------------------------------------------------
+
+/**
+ * \brief 	Encuentra una posicion vacia en el array
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ *  * \return Retorna la posicion disopnible o -1 si ocurre algun error
+ *
+ */
 int com_getEmptyIndex(Compra* array,int limite)
 {
 	int respuesta = -1;
@@ -108,12 +153,24 @@ int com_getEmptyIndex(Compra* array,int limite)
 			}
 	return respuesta;
 }
-//----------------------------------------------------------------------------------------------------------------
-int com_alta(Compra* array,int limite, int indice,int idCliente, int* idCompra)
+/**
+ * \brief 	Pide ingresar datos de una Compra para luego buscar una posicion libre en el array y lo guarda ahi
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+  * \param idCliente. Variable donde se guarda el id del cliente que realizo la compra
+ * \param idCompra. Puntero a la variable donde se guarda el id disponible para ponerle a la Compra
+ *  * \return Retorna 0 si se carga la compra correctamente y -1 si ocurre algun error
+ *
+ */
+int com_alta(Compra* array,int limite,int idCliente, int* idCompra)
 {
 	int respuesta = -1;
 	Compra bufferCompra;
-	if(array != NULL && limite > 0 && indice < limite && indice >= 0 && idCompra != NULL)
+	int indiceCompra = -1;
+	if(array != NULL && limite > 0 )
+	{
+		indiceCompra = com_getEmptyIndex(array,limite);
+		if(indiceCompra < limite && indiceCompra >= 0 && idCompra != NULL)
 		{
 			if( aux_getString(bufferCompra.descripcion,QTY_DESCRIPCION,"\nIngrese descripcion: ", "\nError",2) ==0 &&
 				aux_getString(bufferCompra.direccionDeEntrega,QTY_DIRECCIONDEENTREGA, "\nIngrese direccion: ","\nError",2 )==0 &&
@@ -125,25 +182,25 @@ int com_alta(Compra* array,int limite, int indice,int idCliente, int* idCompra)
 					bufferCompra.idCompra = *idCompra;
 					bufferCompra.isEmpty = 0;
 					bufferCompra.estado=0;
-					array[indice] = bufferCompra;
+					array[indiceCompra] = bufferCompra;
 					printf("\nCompra agregada correctamente con id: %d", (*idCompra));
 					(*idCompra)++;
 				}
 		}
-	return respuesta;
-}
-//----------------------------------------------------------------------------------------------------------------
-int com_baja(Compra* array,int limite, int indice)
-{
-	int respuesta = -1;
-	if(array != NULL && limite > 0 && indice < limite && indice >= 0 && array[indice].estado == 0)
-	{
-		array[indice].estado = 1;
-		respuesta = 0;
 	}
+
 	return respuesta;
 }
-//----------------------------------------------------------------------------------------------------------------
+
+
+/**
+ * \brief 	Busca la posicion donde se encuentra una compra en el array
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+  * \param valorBuscado. Id de la compra a buscar.
+ *  * \return Retorna la posicion de la compra en el array o -1 si ocurre algun error
+ *
+ */
 int com_buscarId(Compra array[], int limite, int valorBuscado)
 {
 	int respuesta = -1;
@@ -162,7 +219,14 @@ int com_buscarId(Compra array[], int limite, int valorBuscado)
 	return respuesta;
 }
 
-//----------------------------------------------------------------------------------------------------------------
+/**
+ * \brief Imprime todas las compras realizadas por un cliente
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ * \param indice. id del cliente
+ * \return Retorna 0 si imprime las compras correctamente y -1 si ocurre algun error
+ *
+ */
 int com_ImprimirPorClienteId(Compra array[], int limite, int clienteId)
 {
 	int respuesta = -1;
@@ -175,14 +239,21 @@ int com_ImprimirPorClienteId(Compra array[], int limite, int clienteId)
 			{
 				bufferCompra = array[i];
 				com_imprimir(&bufferCompra);
-				respuesta = 0;
-
 			}
 		}
+		respuesta = 0;
 	}
 	return respuesta;
 }
 
+/**
+ * \brief Elimina todas las compras realizadas por un cliente
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ * \param indice. id del cliente
+ * \return Retorna 0 si elimina las compras correctamente y -1 si ocurre algun error
+ *
+ */
 int com_EliminarPorClienteId(Compra array[], int limite, int clienteId)
 {
 	int respuesta = -1;
@@ -193,14 +264,21 @@ int com_EliminarPorClienteId(Compra array[], int limite, int clienteId)
 			if(array[i].idCliente == clienteId && array[i].isEmpty == 0)
 			{
 				array[i].isEmpty = 1;
-				respuesta = 0;
-				break;
 			}
 		}
+		respuesta = 0;
 	}
 		return respuesta;
 }
 
+/**
+ * \brief marca una compra como pagada
+ * \param array. Puntero a al array de Compras
+ * \param limite. Cantidad maxima de posiciones del array
+ * \param posicion. Posicion de la compra en el array
+ * \return Retorna 0 si marca la compra correctamente y -1 si ocurre algun error
+ *
+ */
 int com_PagarCompra(Compra array[], int limite, int posicion)
 {
 	int respuesta = -1;
@@ -224,6 +302,15 @@ int com_PagarCompra(Compra array[], int limite, int posicion)
 	return respuesta;
 }
 
+/**
+ * \brief 	Elimina del array una Compra que no este paga
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+  * \param indice. Posicion del array a eliminar.
+ *  * \return Retorna 0 si se elimina la compra correctamente y -1 si ocurre algun error
+ *
+ */
+
 int com_CancelarCompra(Compra array[], int limite, int posicion)
 {
 	int respuesta = -1;
@@ -246,6 +333,16 @@ int com_CancelarCompra(Compra array[], int limite, int posicion)
 	return respuesta;
 }
 
+/**
+ * \brief 	Cuenta la cantidad de compras que tiene un cliente
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+  * \param clienteId. Id del cliente a buscar
+  * \param cantidad. Puntero a la variable donde se guardara la cantidad de compras del cliente
+ *  * \return Retorna 0 si los parametros no son null y -1 si ocurre algun error
+ *
+ */
+
 int com_ContarPorClienteId(Compra array[], int limite, int clienteId, int* cantidad)
 {
 	int respuesta = -1;
@@ -264,6 +361,14 @@ int com_ContarPorClienteId(Compra array[], int limite, int clienteId, int* canti
 		}
 	return respuesta;
 }
+
+/**
+ * \brief 	Cuenta e imprimer la cantidad de compras pendientes de pago
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+ * \return Retorna 0 los parametros son correctos y -1 si ocurre algun error
+ *
+ */
 
 int com_ContarPendientes(Compra array[], int limite)
 {
@@ -284,6 +389,13 @@ int com_ContarPendientes(Compra array[], int limite)
 	return respuesta;
 }
 
+/**
+ * \brief 	Busca e imprime la compra con el precio mas bajo por unidad
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+ * \return Retorna 0 si los parametros son correctos y -1 si ocurre algun error
+ *
+ */
 int com_CompraConPrecioXunidadMasBajo(Compra array[], int limite)
 {
 	int respuesta = -1;
@@ -326,6 +438,13 @@ int com_CompraConPrecioXunidadMasBajo(Compra array[], int limite)
 	return respuesta;
 }
 
+/**
+ * \brief 	Busca e imprime el color de barbijo mas pedido junto a la cantidad de compras donde lo piden
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+ * \return Retorna 0 si los parametros son correctos y -1 si ocurre algun error
+ *
+ */
 int com_ColorMasPedido(Compra array[], int limite)
 {
 	int respuesta = -1;
@@ -377,6 +496,15 @@ int com_ColorMasPedido(Compra array[], int limite)
 
 }
 
+/**
+ * \brief 	Cuenta la cantidad de compras que tiene un color
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+ * \param color. Array de caracteres que contiene el color a buscar
+ * \param cantidad. Puntero a la variable donde se guardará la cantidad de pedidos del color
+ * \return Retorna 0 si los parametros son correctos y -1 si ocurre algun error
+ *
+ */
 int com_ContarPorColor(Compra array[], int limite, char color[], int* cantidad)
 {
 	int respuesta = -1;
