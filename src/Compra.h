@@ -29,9 +29,10 @@ int com_ImprimirPorClienteId(Compra array[], int limite, int clienteId);
 int com_EliminarPorClienteId(Compra array[], int limite, int clienteId);
 int com_PagarCompra(Compra array[], int limite, int posicion);
 int com_CancelarCompra(Compra array[], int limite, int posicion);
-int com_ContarPorClienteId(Compra array[], int limite, int clienteId, int* cantidad);
+int com_ContarPorClienteId(Compra array[], int limite, int clienteId, int* cantidad, int estado);
 int com_ContarPendientes(Compra array[], int limite);
 int com_CompraConPrecioXunidadMasBajo(Compra array[], int limite);
 int com_ColorMasPedido(Compra array[], int limite);
 int com_ContarPorColor(Compra array[], int limite, char color[], int* cantidad);
+int com_ContarPagasPorClienteId(Compra array[], int limite, int clienteId, int* cantidad);
 #endif /* COMPRA_H_ */

@@ -85,8 +85,11 @@ int main(void) {
 								"\n\n1. Color de barbijo que se compro mas veces"
 								"\n2.   Cantidad de compras pendientes"
 								"\n3.   Compra con precio por unidad mas bajo"
-								"\n4.   Salir\n\n",
-								"\nOError, opcion no valida. Reingrese",1,4,2) )
+								"\n4    Cliente con mas compras pagas"
+								"\n5.   Cliente con mas compras pendientes de pago"
+								"\n6    Lista de compras pendientes por cliente"
+								"\n7.   Salir\n\n",
+								"\nOError, opcion no valida. Reingrese",1,7,2) )
 							{
 								switch(opcion)
 								{
@@ -108,9 +111,26 @@ int main(void) {
 										printf("\nERROR");
 									}
 									break;
+								case 4:
+									if(CliCom_ImprimirClientesConMasComprasPorEstado(arrayCompra, MAX_COMPRAS, idCompras, arrayCliente, MAX_CLIENTES, 1) != 0)
+									{
+										printf("\nERROR. No hay compras abonadas");
+									}
+									break;
+								case 5:
+									if(CliCom_ImprimirClientesConMasComprasPorEstado(arrayCompra, MAX_COMPRAS, idCompras, arrayCliente, MAX_CLIENTES, 0) != 0)
+									{
+										printf("\nERROR. No hay compras pendientes de pago");
+									}
+									break;
+								case 6:
+									if(CliCom_ImprimirClientesConComprasPendientes(arrayCompra, MAX_COMPRAS, idCompras, arrayCliente, MAX_CLIENTES) != 0)
+									{
+										printf("\nERROR");
+									}
 								}
 							}
-						}while(opcion != 4);
+						}while(opcion != 7);
 						break;
 					}
 				}

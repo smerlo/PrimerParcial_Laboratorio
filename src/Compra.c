@@ -333,34 +333,7 @@ int com_CancelarCompra(Compra array[], int limite, int posicion)
 	return respuesta;
 }
 
-/**
- * \brief 	Cuenta la cantidad de compras que tiene un cliente
- * \param array. Puntero al array de Compras
- * \param limite Cantidad maxima de posiciones del array
-  * \param clienteId. Id del cliente a buscar
-  * \param cantidad. Puntero a la variable donde se guardara la cantidad de compras del cliente
- *  * \return Retorna 0 si los parametros no son null y -1 si ocurre algun error
- *
- */
 
-int com_ContarPorClienteId(Compra array[], int limite, int clienteId, int* cantidad)
-{
-	int respuesta = -1;
-	int contador = 0;
-		if(array != NULL && limite > 0 && clienteId >= 0)
-		{
-			respuesta = 0;
-			for(int i=0;i<limite;i++)
-			{
-				if(array[i].isEmpty == 0 && array[i].idCliente == clienteId)
-				{
-					contador++;
-				}
-			}
-			*cantidad = contador;
-		}
-	return respuesta;
-}
 
 /**
  * \brief 	Cuenta e imprimer la cantidad de compras pendientes de pago
@@ -524,4 +497,75 @@ int com_ContarPorColor(Compra array[], int limite, char color[], int* cantidad)
 	return respuesta;
 }
 
+
+/**
+ * \brief 	Cuenta la cantidad de compras pagadas que tiene un cliente
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+  * \param clienteId. Id del cliente a buscar
+  * \param cantidad. Puntero a la variable donde se guardara la cantidad de compras del cliente
+ *  * \return Retorna 0 si los parametros no son null y -1 si ocurre algun error
+ *
+ */
+
+int com_ContarPagasPorClienteId(Compra array[], int limite, int clienteId, int* cantidad)
+{
+	int respuesta = -1;
+	int contador = 0;
+		if(array != NULL && limite > 0 && clienteId >= 0)
+		{
+			respuesta = 0;
+			for(int i=0;i<limite;i++)
+			{
+				if(array[i].isEmpty == 0 && array[i].idCliente == clienteId && array[i].estado == 1)
+				{
+					contador++;
+				}
+			}
+			*cantidad = contador;
+		}
+	return respuesta;
+}
+/**
+ * \brief 	Cuenta la cantidad de compras que tiene un cliente
+ * \param array. Puntero al array de Compras
+ * \param limite Cantidad maxima de posiciones del array
+  * \param clienteId. Id del cliente a buscar
+  * \param cantidad. Puntero a la variable donde se guardara la cantidad de compras del cliente
+ *  * \return Retorna 0 si los parametros no son null y -1 si ocurre algun error
+ *
+ */
+
+int com_ContarPorClienteId(Compra array[], int limite, int clienteId, int* cantidad, int estado)
+{
+	int respuesta = -1;
+	int contador = 0;
+	if(array != NULL && limite > 0 && clienteId >= 0)
+	{
+		respuesta = 0;
+		if(estado == -1)
+		{
+			for(int i=0;i<limite;i++)
+			{
+				if(array[i].isEmpty == 0 && array[i].idCliente == clienteId)
+				{
+					contador++;
+				}
+			}
+		}
+		else
+		{
+			for(int i=0;i<limite;i++)
+			{
+				if(array[i].isEmpty == 0 && array[i].idCliente == clienteId && array[i].estado == estado)
+				{
+					contador++;
+				}
+			}
+		}
+
+		*cantidad = contador;
+	}
+	return respuesta;
+}
 

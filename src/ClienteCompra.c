@@ -208,9 +208,104 @@ int CliCom_ImprimirClientesConCompras(Compra compraArray[], int limiteCompras,in
 			printf("IdCliente - Nombre - Apellido - Cuit - Compras");
 			for(int i=0;i<limiteCliente;i++)
 			{
-				if(clienteArray[i].isEmpty == 0 && com_ContarPorClienteId(compraArray,limiteCompras, clienteArray[i].id, &cantidadCompras) == 0)
+				if(clienteArray[i].isEmpty == 0 && com_ContarPorClienteId(compraArray,limiteCompras, clienteArray[i].id, &cantidadCompras, -1) == 0)
 				{
 					cli_ImprimirConCompras(&clienteArray[i], cantidadCompras);
+				}
+			}
+			respuesta = 0;
+		}
+	return respuesta;
+}
+
+/**
+ * \brief Imprime el cliente con mayor compras por estado
+ * \param arrayCliente. Puntero a al array de Clientes
+ * \param limiteClientes. Cantidad maxima de posiciones del array
+ * \param arrayCompra. Puntero a al array de Clientes
+ * \param limiteCompras. Cantidad maxima de posiciones del array
+ * \param indiceCompras. Variable donde se guarda el id disponible
+ * \param estado. Define con 1 si es estado pago o 0 pendiente de pagar
+
+ * \return Retorna 0 si el listado se imprime correctamente y -1 si ocurre algun error
+ *
+ */
+int CliCom_ImprimirClientesConMasComprasPorEstado(Compra compraArray[], int limiteCompras,int indiceCompras, Cliente clienteArray[], int limiteCliente, int estado)
+{
+	int respuesta = -1;
+	int idCliente = -1;
+	int compras = -1;
+	int cantidadComprasAux= -1;
+	int posicionCliente = -1;
+	if(clienteArray != NULL && limiteCliente > 0 && compraArray != NULL && limiteCompras > 0)
+		{
+			if(estado == 1)
+			{
+				printf("IdCliente - Nombre - Apellido - Cuit - Compras Pagadas");
+			}
+			else
+			{
+				printf("IdCliente - Nombre - Apellido - Cuit - Compras Pendientes");
+			}
+			for(int i=0;i<limiteCliente;i++)
+			{
+				if(com_ContarPorClienteId(compraArray,limiteCompras, clienteArray[i].id, &cantidadComprasAux, estado) == 0)
+				{
+					if(cantidadComprasAux > compras)
+					{
+						compras = cantidadComprasAux;
+						idCliente = clienteArray[i].id;
+					}
+				}
+			}
+			if(compras != -1 && idCliente != -1)
+			{
+				posicionCliente = cli_buscarId(clienteArray, limiteCliente, idCliente);
+				if(posicionCliente != -1)
+				{
+					cli_ImprimirConCompras(&clienteArray[posicionCliente], compras);
+					respuesta = 0;
+				}
+			}
+
+		}
+	return respuesta;
+}
+
+
+/**
+ * \brief Imprime todos los clientes junto con sus compras
+ * \param arrayCliente. Puntero a al array de Clientes
+ * \param limiteClientes. Cantidad maxima de posiciones del array
+ * \param arrayCompra. Puntero a al array de Clientes
+ * \param limiteCompras. Cantidad maxima de posiciones del array
+ * \param indiceCompras. Variable donde se guarda el id disponible
+
+ * \return Retorna 0 si el listado se imprime correctamente y -1 si ocurre algun error
+ *
+ */
+int CliCom_ImprimirClientesConComprasPendientes(Compra compraArray[], int limiteCompras,int indiceCompras, Cliente clienteArray[], int limiteCliente)
+{
+	int respuesta = -1;
+	int cantidadCompras;
+	if(clienteArray != NULL && limiteCliente > 0 && compraArray != NULL && limiteCompras > 0)
+		{
+
+			for(int i=0;i<limiteCliente;i++)
+			{
+				cantidadCompras = -1;
+				if(clienteArray[i].isEmpty == 0 && com_ContarPorClienteId(compraArray,limiteCompras, clienteArray[i].id, &cantidadCompras, 0) == 0)
+				{
+					if(cantidadCompras != -1)
+					{
+						printf("\nCliente: ");
+						printf("\nIdCliente - Nombre - Apellido - Cuit");
+						cli_imprimir(&clienteArray[i]);
+						printf("\nCompras: ");
+						printf("\nIdCompra - Descripcion - Entre calles - Color - Cantidad ");
+						com_ImprimirPorClienteId(compraArray, limiteCompras, clienteArray[i].id);
+						printf("\n\n");
+					}
 				}
 			}
 			respuesta = 0;
